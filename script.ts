@@ -27,20 +27,10 @@ class MusicPlayer {
                 this.toggleMusic();
             });
         }
+    }
 
-        // Intentar reproducir automáticamente cuando el usuario interactúa
-        document.addEventListener('click', () => {
-            if (!this.isPlaying) {
-                this.playMusic();
-            }
-        }, { once: true });
-
-        // También intentar con scroll
-        window.addEventListener('scroll', () => {
-            if (!this.isPlaying && window.scrollY > 50) {
-                this.playMusic();
-            }
-        }, { once: true });
+    public startMusic(): void {
+        this.playMusic();
     }
 
     private playMusic(): void {
@@ -50,8 +40,9 @@ class MusicPlayer {
                 this.controlBtn.textContent = '🔊';
                 this.controlBtn.classList.remove('muted');
             }
+            console.log('🎵 Música reproduciéndose...');
         }).catch(error => {
-            console.log('No se pudo reproducir automáticamente:', error);
+            console.log('⚠️ No se pudo reproducir automáticamente:', error);
         });
     }
 
@@ -180,9 +171,9 @@ class FireworksShow {
 
         this.animate();
 
-        // Lanzar fuegos artificiales durante 12 segundos
-        const duration = 12000;
-        const interval = 600;
+        // Lanzar fuegos artificiales durante 25 segundos
+        const duration = 25000;
+        const interval = 500;
         let elapsed = 0;
 
         const fireworkInterval = setInterval(() => {
@@ -747,6 +738,33 @@ class HeartsAndSurprise {
     }
 
     private openSurprise(): void {
+        const surpriseMessages = [
+            '¡Sorpresa! 🎉',
+            '¡Feliz cumpleaños Nayeli! 🎂',
+            '¡Una sorpresa especial para ti! ✨',
+            '¡Mágia y alegría! 🌟',
+            '¡Momentos inolvidables! 💝'
+        ];
+
+        const randomMessage = surpriseMessages[Math.floor(Math.random() * surpriseMessages.length)];
+
+        // Crear mensaje en el centro
+        const centerMessage = document.createElement('div');
+        centerMessage.textContent = randomMessage;
+        centerMessage.style.position = 'fixed';
+        centerMessage.style.left = '50%';
+        centerMessage.style.top = '40%';
+        centerMessage.style.transform = 'translate(-50%, -50%)';
+        centerMessage.style.fontSize = '2.5rem';
+        centerMessage.style.fontWeight = 'bold';
+        centerMessage.style.color = '#ff6b6b';
+        centerMessage.style.textShadow = '2px 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.3)';
+        centerMessage.style.pointerEvents = 'none';
+        centerMessage.style.zIndex = '1000';
+        centerMessage.style.animation = 'surpriseMessage 2s ease-out forwards';
+
+        document.body.appendChild(centerMessage);
+
         const surprises = ['🎁', '🎈', '🎉', '✨', '🌟', '💝', '🎊', '🦋', '🌸', '🎀'];
         
         for (let i = 0; i < 15; i++) {
@@ -786,6 +804,9 @@ class HeartsAndSurprise {
                 animate();
             }, i * 100);
         }
+
+        // Remover mensaje después de la animación
+        setTimeout(() => centerMessage.remove(), 2000);
 
         if (this.surpriseContainer) {
             setTimeout(() => this.surpriseContainer?.classList.remove('active'), 2000);
@@ -903,11 +924,11 @@ class PetalsAndRoulette {
             this.ctx.restore();
         }
 
-        // Indicador
+        // Indicador (a la derecha, 1/4 de vuelta)
         this.ctx.beginPath();
-        this.ctx.moveTo(centerX, centerY - radius - 20);
-        this.ctx.lineTo(centerX - 10, centerY - radius);
-        this.ctx.lineTo(centerX + 10, centerY - radius);
+        this.ctx.moveTo(centerX + radius + 20, centerY); // punta del indicador
+        this.ctx.lineTo(centerX + radius, centerY - 10);
+        this.ctx.lineTo(centerX + radius, centerY + 10);
         this.ctx.closePath();
         this.ctx.fillStyle = '#ff0000';
         this.ctx.fill();
@@ -950,9 +971,13 @@ class PetalsAndRoulette {
     }
 
     private showResult(rotation: number): void {
-        const sliceAngle = (Math.PI * 2) / this.wishes.length;
-        const normalizedRotation = (rotation % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2);
-        const selectedIndex = Math.floor((this.wishes.length - normalizedRotation / sliceAngle) % this.wishes.length);
+        const twoPi = Math.PI * 2;
+        const sliceAngle = twoPi / this.wishes.length;
+        // Normalizamos la rotación al rango [0, 2π)
+        const rot = ((rotation % twoPi) + twoPi) % twoPi;
+        // El indicador está a la derecha (ángulo 0 rad). Calculamos el ángulo efectivo bajo el puntero
+        const angleUnderPointer = (twoPi - rot) % twoPi;
+        const selectedIndex = Math.floor(angleUnderPointer / sliceAngle) % this.wishes.length;
 
         if (this.resultDiv) {
             this.resultDiv.textContent = `🎉 ${this.wishes[selectedIndex]} 🎉`;
@@ -1071,19 +1096,49 @@ class BalloonsAndPiano {
                     key.classList.add('playing');
                     setTimeout(() => key.classList.remove('playing'), 300);
 
-                    // Efecto visual
-                    const visual = document.createElement('div');
-                    visual.textContent = '🎵';
-                    visual.style.position = 'fixed';
-                    visual.style.left = `${(key as HTMLElement).getBoundingClientRect().left}px`;
-                    visual.style.top = `${(key as HTMLElement).getBoundingClientRect().top - 30}px`;
-                    visual.style.fontSize = '2rem';
-                    visual.style.pointerEvents = 'none';
-                    visual.style.animation = 'fadeUpOut 1s forwards';
-                    visual.style.zIndex = '1000';
+                    // Efecto visual mejorado con partículas
+                    const keyRect = (key as HTMLElement).getBoundingClientRect();
+                    const centerX = keyRect.left + keyRect.width / 2;
+                    const centerY = keyRect.top;
 
-                    document.body.appendChild(visual);
-                    setTimeout(() => visual.remove(), 1000);
+                    for (let i = 0; i < 8; i++) {
+                        const particle = document.createElement('div');
+                        particle.textContent = ['🎵', '⭐', '✨', '💫', '🌟', '🎶', '🎼', '🎹'][Math.floor(Math.random() * 8)];
+                        particle.style.position = 'fixed';
+                        particle.style.left = `${centerX}px`;
+                        particle.style.top = `${centerY}px`;
+                        particle.style.fontSize = '1.5rem';
+                        particle.style.pointerEvents = 'none';
+                        particle.style.zIndex = '1000';
+                        particle.style.color = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24', '#f0932b', '#6c5ce7', '#fd79a8', '#a29bfe'][Math.floor(Math.random() * 8)];
+
+                        document.body.appendChild(particle);
+
+                        const angle = (Math.PI * 2 * i) / 8;
+                        const velocity = 2 + Math.random() * 3;
+                        let posX = centerX;
+                        let posY = centerY;
+                        let vx = Math.cos(angle) * velocity;
+                        let vy = Math.sin(angle) * velocity - 1; // Un poco hacia arriba
+
+                        const animate = () => {
+                            posX += vx;
+                            posY += vy;
+                            vy += 0.1; // Gravedad ligera
+
+                            particle.style.left = `${posX}px`;
+                            particle.style.top = `${posY}px`;
+                            particle.style.opacity = `${Math.max(0, 1 - (centerY - posY) / 200)}`;
+
+                            if (posY < window.innerHeight && posY > 0) {
+                                requestAnimationFrame(animate);
+                            } else {
+                                particle.remove();
+                            }
+                        };
+
+                        animate();
+                    }
                 }
             });
         });
@@ -1444,9 +1499,87 @@ class MagicButterflies {
     }
 }
 
+// Clase para manejar el sobre de inicio
+class EnvelopeIntro {
+    private envelopeScreen: HTMLElement;
+    private envelope: HTMLElement;
+    private musicPlayer: MusicPlayer | null = null;
+
+    constructor() {
+        this.envelopeScreen = document.getElementById('envelope-screen') as HTMLElement;
+        this.envelope = document.getElementById('envelope') as HTMLElement;
+        this.initEnvelope();
+    }
+
+    private initEnvelope(): void {
+        if (this.envelope) {
+            this.envelope.addEventListener('click', () => {
+                this.openEnvelope();
+            });
+        }
+    }
+
+    public setMusicPlayer(player: MusicPlayer): void {
+        this.musicPlayer = player;
+    }
+
+    private openEnvelope(): void {
+        // Abrir el sobre con animación
+        this.envelope.classList.add('open');
+
+        // Crear partículas de celebración
+        this.createCelebrationParticles();
+
+        // Esperar a que la animación del sobre termine
+        setTimeout(() => {
+            // Reproducir música
+            if (this.musicPlayer) {
+                this.musicPlayer.startMusic();
+            }
+
+            // Ocultar pantalla del sobre
+            setTimeout(() => {
+                this.envelopeScreen.classList.add('hidden');
+                
+                // Remover completamente después de la transición
+                setTimeout(() => {
+                    this.envelopeScreen.remove();
+                }, 1000);
+            }, 1500);
+        }, 1000);
+    }
+
+    private createCelebrationParticles(): void {
+        const emojis = ['🎉', '🎊', '✨', '🎈', '🎁', '💖', '🌟', '💫', '🦋', '🌸'];
+        
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.classList.add('celebration-particle');
+                particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = '50%';
+                particle.style.animationDelay = `${Math.random() * 0.5}s`;
+                
+                document.body.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 2000);
+            }, i * 50);
+        }
+    }
+}
+
 // Inicializar la aplicación cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
+    // Inicializar el sobre primero
+    const envelopeIntro = new EnvelopeIntro();
+    
+    // Inicializar el reproductor de música
     const musicPlayer = new MusicPlayer();
+    
+    // Conectar el sobre con el reproductor de música
+    envelopeIntro.setMusicPlayer(musicPlayer);
+    
     const pathReveal = new PathReveal();
     const celebration = new BirthdayCelebration();
     const cardInteractions = new CardInteractions();
@@ -1461,7 +1594,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const butterflies = new MagicButterflies();
     
     console.log('🎉 ¡Página de cumpleaños cargada exitosamente!');
-    console.log('🛤️ ¡Comienza el viaje de celebración!');
+    console.log('💌 ¡Abre el sobre para comenzar!');
     console.log('🎵 Música lista para reproducir');
     console.log('✨ ¡Todos los efectos están listos!');
 });
