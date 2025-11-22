@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños Nayeli! 🎉</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="scroll-indicator">
+        <p>Desplázate hacia abajo ⬇️</p>
+        <div class="arrow">↓</div>
+    </div>
+
+    <div class="path-container">
+        <div class="global-path-line"></div>
+
+        <!-- Inicio del camino -->
+        <section class="path-section section-1" data-section="1">
+            <div class="path-marker">🏁</div>
+            <div class="content-box reveal">
+                <h1 class="title">¡Hoy es tu día especial, Nayeli! 🎉</h1>
+                <p class="message">Prepárate para un viaje lleno de sorpresas y alegría...</p>
+                <div class="emoji-big">🌟</div>
+                <button class="effect-btn stars-btn" data-effect="stars">⭐ Lluvia de Estrellas ⭐</button>
+                <button class="effect-btn pinata-btn" data-effect="pinata">🪅 Romper Piñata 🪅</button>
+                <div class="effect-container stars-container"></div>
+                <div class="pinata-container">
+                    <div class="pinata">🪅</div>
+                    <div class="pinata-hits">0/10</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de cualidades -->
+        <section class="path-section section-2" data-section="2">
+            <div class="path-marker">✨</div>
+            <div class="content-box reveal">
+                <h2>Nayeli, eres increíble porque... ✨</h2>
+                <div class="qualities-grid">
+                    <div class="quality-card">
+                        <span class="quality-emoji">😊</span>
+                        <p>Tu sonrisa ilumina el mundo</p>
+                    </div>
+                    <div class="quality-card">
+                        <span class="quality-emoji">💪</span>
+                        <p>Tu fuerza inspira a todos</p>
+                    </div>
+                    <div class="quality-card">
+                        <span class="quality-emoji">❤️</span>
+                        <p>Tu corazón es puro y noble</p>
+                    </div>
+                    <div class="quality-card">
+                        <span class="quality-emoji">🌈</span>
+                        <p>Tu energía contagia alegría</p>
+                    </div>
+                </div>
+                <button class="effect-btn hearts-btn" data-effect="hearts">💖 Corazones Voladores 💖</button>
+                <button class="effect-btn surprise-btn" data-effect="surprise">📦 Caja de Sorpresas 📦</button>
+                <div class="effect-container hearts-container"></div>
+                <div class="surprise-box-container">
+                    <div class="surprise-box">🎁</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de recuerdos -->
+        <section class="path-section section-3" data-section="3">
+            <div class="path-marker">📸</div>
+            <div class="content-box reveal">
+                <h2>Momentos especiales contigo, Nayeli 📸</h2>
+                <div class="memories">
+                    <div class="memory-item">
+                        <div class="memory-icon">🎭</div>
+                        <p>Todas las risas que compartimos</p>
+                    </div>
+                    
+                    <div class="memory-item">
+                        <div class="memory-icon">☕</div>
+                        <p>Nuestras charlas inolvidables</p>
+                    </div>
+                </div>
+                <button class="effect-btn petals-btn" data-effect="petals">🌸 Pétalos Mágicos 🌸</button>
+                <button class="effect-btn roulette-btn" data-effect="roulette">🎡 Ruleta de Deseos 🎡</button>
+                <div class="effect-container petals-container"></div>
+                <div class="roulette-container">
+                    <canvas id="rouletteCanvas"></canvas>
+                    <div class="roulette-result"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de deseos -->
+        <section class="path-section section-4" data-section="4">
+            <div class="path-marker">🌠</div>
+            <div class="content-box reveal">
+                <h2>Mis deseos para ti, Nayeli 🌠</h2>
+                <div class="wishes">
+                    <div class="wish-item">
+                        <span class="wish-emoji">🎯</span>
+                        <p>Que alcances cada sueño que persigues</p>
+                    </div>
+                    <div class="wish-item">
+                        <span class="wish-emoji">✈️</span>
+                        <p>Que explores el mundo y vivas aventuras</p>
+                    </div>
+                    <div class="wish-item">
+                        <span class="wish-emoji">💖</span>
+                        <p>Que el amor y la felicidad te rodeen</p>
+                    </div>
+                    <div class="wish-item">
+                        <span class="wish-emoji">🌟</span>
+                        <p>Que sigas brillando como solo tú sabes</p>
+                    </div>
+                </div>
+                <button class="effect-btn balloons-btn" data-effect="balloons">🎈 Globos Flotantes 🎈</button>
+                <button class="effect-btn piano-btn" data-effect="piano">🎹 Piano Mágico 🎹</button>
+                <div class="effect-container balloons-container"></div>
+                <div class="piano-container">
+                    <div class="piano-keys">
+                        <div class="piano-key" data-note="C">Do</div>
+                        <div class="piano-key" data-note="D">Re</div>
+                        <div class="piano-key" data-note="E">Mi</div>
+                        <div class="piano-key" data-note="F">Fa</div>
+                        <div class="piano-key" data-note="G">Sol</div>
+                        <div class="piano-key" data-note="A">La</div>
+                        <div class="piano-key" data-note="B">Si</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección del pastel -->
+        <section class="path-section section-5" data-section="5">
+            <div class="path-marker">🎂</div>
+            <div class="content-box reveal">
+                <h2>¡Es hora de celebrar, Nayeli! 🎂</h2>
+                <div class="cake-container">
+                    <div class="cake-big">🎂</div>
+                    <p class="cake-text">Sopla las velas y pide tu deseo más especial</p>
+                    <button class="celebration-btn" id="blowCandlesBtn">Soplar las velas 💨</button>
+                </div>
+                <button class="effect-btn game-btn" data-effect="game">🎁 Atrapar Regalos 🎁</button>
+                <button class="effect-btn aurora-btn" data-effect="aurora">🌌 Auroras Boreales 🌌</button>
+                <div class="game-container">
+                    <canvas id="gameCanvas"></canvas>
+                    <div class="game-score">Puntos: <span id="scoreValue">0</span></div>
+                    <div class="game-timer">Tiempo: <span id="timerValue">30</span>s</div>
+                </div>
+                <canvas class="aurora-canvas" id="auroraCanvas"></canvas>
+            </div>
+        </section>
+
+        <!-- Sección final -->
+        <section class="path-section section-6" data-section="6">
+            <div class="path-marker">🎁</div>
+            <div class="content-box reveal final-section">
+                <h1 class="final-title">¡FELIZ CUMPLEAÑOS NAYELI! 🎊</h1>
+                <div class="balloons-final">
+                    <span class="balloon-emoji">🎈</span>
+                    <span class="balloon-emoji">🎈</span>
+                    <span class="balloon-emoji">🎈</span>
+                    <span class="balloon-emoji">🎈</span>
+                    <span class="balloon-emoji">🎈</span>
+                </div>
+                <p class="final-message">Que este nuevo año de vida esté lleno de alegría, amor, éxitos y momentos inolvidables. ¡Eres única y especial!</p>
+                <button class="celebration-btn" id="celebrateBtn">¡Celebrar! 🎉</button>
+                <button class="fireworks-btn" id="fireworksBtn">🎆 ¡Fuegos Artificiales! 🎆</button>
+                <button class="effect-btn butterflies-btn" data-effect="butterflies">🦋 Mariposas Mágicas 🦋</button>
+                <div class="gifts">
+                    <div class="gift">🎁</div>
+                    <div class="gift">🎁</div>
+                    <div class="gift">🎁</div>
+                </div>
+                <div class="effect-container butterflies-container"></div>
+            </div>
+        </section>
+    </div>
+
+    <div class="confetti-container" id="confettiContainer"></div>
+    <canvas class="fireworks-canvas" id="fireworksCanvas"></canvas>
+    <div class="fireworks-messages" id="fireworksMessages"></div>
+    
+    <!-- Audio player -->
+    <audio id="birthdayMusic" loop>
+        <source src="Assets/mañanitas.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Music control button -->
+    <button class="music-control" id="musicControl" title="Controlar música">
+        🔊
+    </button>
+    
+    <script src="script.js"></script>
+</body>
+</html>

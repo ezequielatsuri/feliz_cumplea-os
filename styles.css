@@ -1,0 +1,1274 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Scroll indicator */
+/* Music control button */
+.music-control {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.music-control:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+
+.music-control:active {
+    transform: scale(0.95);
+}
+
+.music-control.muted {
+    opacity: 0.6;
+}
+
+.scroll-indicator {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: white;
+    z-index: 1000;
+    animation: fadeInOut 3s ease-in-out infinite;
+}
+
+.scroll-indicator p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.arrow {
+    font-size: 2rem;
+    animation: bounce 2s infinite;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Path container */
+.path-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 100px 20px;
+    perspective: 2000px;
+    perspective-origin: center top;
+}
+
+/* Global Path Line con efecto 3D de profundidad */
+.global-path-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 12px;
+    background: repeating-linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.95) 0,
+        rgba(255, 255, 255, 0.95) 20px,
+        rgba(255, 255, 255, 0.4) 20px,
+        rgba(255, 255, 255, 0.4) 40px
+    );
+    transform: translateX(-50%) translateZ(0) rotateY(0deg);
+    transform-style: preserve-3d;
+    z-index: 1;
+    border-radius: 6px;
+    box-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.6),
+        0 0 40px rgba(102, 126, 234, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.3),
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        0 20px 60px rgba(0, 0, 0, 0.2);
+    animation: pathPulse 3s ease-in-out infinite;
+}
+
+@keyframes pathPulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 20px rgba(255, 255, 255, 0.6),
+            0 0 40px rgba(102, 126, 234, 0.4),
+            inset 0 0 20px rgba(255, 255, 255, 0.3),
+            0 10px 30px rgba(0, 0, 0, 0.3),
+            0 20px 60px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        box-shadow: 
+            0 0 30px rgba(255, 255, 255, 0.8),
+            0 0 60px rgba(118, 75, 162, 0.6),
+            inset 0 0 30px rgba(255, 255, 255, 0.5),
+            0 15px 40px rgba(0, 0, 0, 0.4),
+            0 30px 80px rgba(0, 0, 0, 0.3);
+    }
+}
+
+.global-path-line::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(102, 126, 234, 0.3) 20%,
+        rgba(118, 75, 162, 0.4) 50%,
+        rgba(240, 147, 251, 0.3) 80%,
+        transparent 100%
+    );
+    filter: blur(8px);
+    z-index: -1;
+}
+
+.global-path-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 100%;
+    background: linear-gradient(
+        180deg,
+        rgba(102, 126, 234, 0.2),
+        rgba(118, 75, 162, 0.3),
+        rgba(240, 147, 251, 0.2)
+    );
+    filter: blur(20px);
+    z-index: -2;
+    opacity: 0.6;
+}
+
+/* Path sections con profundidad 3D */
+.path-section {
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
+    width: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+}
+
+.path-section:hover {
+    transform: translateZ(20px) scale(1.02);
+}
+
+/* Path Marker con efecto 3D elevado */
+.path-marker {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateZ(50px);
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    z-index: 20;
+    box-shadow: 
+        0 0 0 5px rgba(255, 255, 255, 0.4),
+        0 0 0 10px rgba(118, 75, 162, 0.2),
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        0 20px 50px rgba(0, 0, 0, 0.2),
+        0 30px 80px rgba(0, 0, 0, 0.1),
+        inset 0 -5px 10px rgba(0, 0, 0, 0.1),
+        inset 0 5px 10px rgba(255, 255, 255, 0.5);
+    border: 4px solid #764ba2;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transform-style: preserve-3d;
+    animation: markerFloat 3s ease-in-out infinite;
+}
+
+@keyframes markerFloat {
+    0%, 100% {
+        transform: translateX(-50%) translateZ(50px) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateZ(50px) translateY(-10px);
+    }
+}
+
+.path-marker::before {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(
+        circle,
+        rgba(118, 75, 162, 0.4) 0%,
+        rgba(118, 75, 162, 0.2) 40%,
+        transparent 70%
+    );
+    border-radius: 50%;
+    z-index: -1;
+    animation: markerGlow 2s ease-in-out infinite;
+}
+
+@keyframes markerGlow {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 1;
+    }
+}
+
+.path-section:hover .path-marker {
+    transform: translateX(-50%) translateZ(80px) scale(1.3);
+    box-shadow: 
+        0 0 0 8px rgba(255, 255, 255, 0.5),
+        0 0 0 15px rgba(118, 75, 162, 0.3),
+        0 15px 40px rgba(118, 75, 162, 0.5),
+        0 30px 70px rgba(0, 0, 0, 0.3),
+        0 50px 100px rgba(0, 0, 0, 0.2),
+        inset 0 -5px 15px rgba(0, 0, 0, 0.15),
+        inset 0 5px 15px rgba(255, 255, 255, 0.7);
+}
+
+/* Content boxes con profundidad 3D */
+.content-box {
+    background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, 0.98),
+        rgba(245, 245, 255, 0.95)
+    );
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.2),
+        0 20px 60px rgba(0, 0, 0, 0.15),
+        0 40px 100px rgba(0, 0, 0, 0.1),
+        inset 0 1px 3px rgba(255, 255, 255, 0.8),
+        inset 0 -1px 3px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    width: 45%;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    transform-style: preserve-3d;
+    transform: translateZ(20px);
+}
+
+.content-box::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: linear-gradient(
+        145deg,
+        rgba(102, 126, 234, 0.2),
+        rgba(118, 75, 162, 0.2),
+        rgba(240, 147, 251, 0.2)
+    );
+    border-radius: 22px;
+    z-index: -1;
+    filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.content-box:hover {
+    transform: translateZ(50px) translateY(-10px);
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.25),
+        0 40px 90px rgba(0, 0, 0, 0.2),
+        0 60px 130px rgba(0, 0, 0, 0.15),
+        inset 0 2px 5px rgba(255, 255, 255, 0.9),
+        inset 0 -2px 5px rgba(0, 0, 0, 0.08),
+        0 0 40px rgba(118, 75, 162, 0.3);
+}
+
+.content-box:hover::before {
+    opacity: 1;
+}
+
+/* Alternating Layout for Desktop */
+@media (min-width: 769px) {
+    .path-section:nth-child(odd) {
+        justify-content: flex-start;
+    }
+
+    .path-section:nth-child(even) {
+        justify-content: flex-end;
+    }
+
+    .path-section:nth-child(odd) .content-box {
+        margin-right: 50px;
+        border-right: 5px solid #764ba2;
+    }
+
+    .path-section:nth-child(even) .content-box {
+        margin-left: 50px;
+        border-left: 5px solid #f093fb;
+    }
+
+    /* Connectors con efecto 3D */
+    .content-box::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 50px;
+        height: 6px;
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.9),
+            rgba(118, 75, 162, 0.6)
+        );
+        border-radius: 3px;
+        box-shadow: 
+            0 0 10px rgba(255, 255, 255, 0.6),
+            0 0 20px rgba(118, 75, 162, 0.4),
+            0 5px 15px rgba(0, 0, 0, 0.2);
+        z-index: -1;
+        transform: translateY(-50%);
+        transition: all 0.6s ease;
+    }
+
+    .path-section:nth-child(odd) .content-box::after {
+        right: -55px;
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.9),
+            rgba(118, 75, 162, 0.6)
+        );
+    }
+
+    .path-section:nth-child(even) .content-box::after {
+        left: -55px;
+        background: linear-gradient(
+            90deg,
+            rgba(240, 147, 251, 0.6),
+            rgba(255, 255, 255, 0.9)
+        );
+    }
+
+    .content-box:hover::after {
+        box-shadow: 
+            0 0 20px rgba(255, 255, 255, 0.8),
+            0 0 40px rgba(118, 75, 162, 0.6),
+            0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* Reveal animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(50px);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile Layout */
+@media (max-width: 768px) {
+    .global-path-line {
+        left: 20px;
+        transform: none;
+    }
+
+    .path-marker {
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .content-box {
+        width: calc(100% - 60px);
+        margin-left: 60px !important; /* Override alternating margins */
+        margin-right: 0 !important;
+        text-align: center;
+    }
+    
+    .path-section {
+        justify-content: flex-start; /* Always align left */
+    }
+}
+
+.title {
+    font-size: 2.5rem;
+    color: #667eea;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #764ba2;
+    margin-bottom: 30px;
+}
+
+.message {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.emoji-big {
+    font-size: 5rem;
+    margin: 20px 0;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Qualities grid */
+.qualities-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.quality-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    border-radius: 15px;
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.quality-card:hover {
+    transform: translateY(-10px) scale(1.05);
+}
+
+.quality-emoji {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.quality-card p {
+    font-size: 1rem;
+    color: white;
+}
+
+/* Memories section */
+.memories {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.memory-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.memory-item:hover {
+    transform: translateX(10px);
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+}
+
+.memory-icon {
+    font-size: 3rem;
+    min-width: 60px;
+}
+
+.memory-item p {
+    font-size: 1.2rem;
+    color: #333;
+    text-align: left;
+}
+
+/* Wishes section */
+.wishes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.wish-item {
+    padding: 25px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border-radius: 15px;
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.wish-item:hover {
+    transform: scale(1.1) rotate(2deg);
+}
+
+.wish-emoji {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.wish-item p {
+    font-size: 1rem;
+    color: white;
+}
+
+/* Cake section */
+.cake-container {
+    padding: 20px;
+}
+
+.cake-big {
+    font-size: 6rem;
+    margin: 20px 0;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-20px);
+    }
+    60% {
+        transform: translateY(-10px);
+    }
+}
+
+.cake-text {
+    font-size: 1.3rem;
+    color: #555;
+    margin: 20px 0;
+}
+
+.cake-big.blown {
+    animation: blowAway 1s ease-out forwards;
+}
+
+@keyframes blowAway {
+    to {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+}
+
+.celebration-btn {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+    margin-top: 20px;
+}
+
+.celebration-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(245, 87, 108, 0.6);
+}
+
+.celebration-btn:active {
+    transform: translateY(0);
+}
+
+.fireworks-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    margin-top: 20px;
+    animation: glow 2s ease-in-out infinite;
+}
+
+.fireworks-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+}
+
+.fireworks-btn:active {
+    transform: translateY(0);
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    50% {
+        box-shadow: 0 5px 25px rgba(102, 126, 234, 0.8), 0 0 30px rgba(102, 126, 234, 0.5);
+    }
+}
+
+/* Final section */
+.final-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.final-title {
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 30px;
+    animation: bounce 2s infinite;
+}
+
+.balloons-final {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.balloon-emoji {
+    font-size: 3rem;
+    display: inline-block;
+    animation: float 3s ease-in-out infinite;
+}
+
+.balloon-emoji:nth-child(1) { animation-delay: 0s; }
+.balloon-emoji:nth-child(2) { animation-delay: 0.2s; }
+.balloon-emoji:nth-child(3) { animation-delay: 0.4s; }
+.balloon-emoji:nth-child(4) { animation-delay: 0.6s; }
+.balloon-emoji:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(10deg);
+    }
+}
+
+.final-message {
+    font-size: 1.3rem;
+    color: white;
+    margin: 20px 0;
+    line-height: 1.8;
+}
+
+.gifts {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    position: relative;
+    z-index: 10;
+}
+
+.gift {
+    font-size: 3rem;
+    animation: wiggle 2s ease-in-out infinite;
+}
+
+.gift:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.gift:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes wiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(10deg);
+    }
+    75% {
+        transform: rotate(-10deg);
+    }
+}
+
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.fireworks-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999;
+    background: transparent;
+}
+
+.fireworks-messages {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1001;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #f00;
+    top: -10px;
+    animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.firework {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.firework-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px currentColor;
+}
+
+@keyframes firework-launch {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-400px);
+        opacity: 0;
+    }
+}
+
+@keyframes firework-explode {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: var(--tx) var(--ty) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeUpAndOut {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateY(0) scale(0.5);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateY(-20px) scale(1);
+    }
+    80% {
+        opacity: 1;
+        transform: translate(-50%, -50%) translateY(-40px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateY(-80px) scale(0.8);
+    }
+}
+
+/* ===== ESTILOS PARA NUEVOS EFECTOS ===== */
+
+/* Botones de efectos */
+.effect-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    margin: 10px 5px;
+    font-weight: bold;
+}
+
+.effect-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+}
+
+.effect-btn:active {
+    transform: translateY(0);
+}
+
+.effect-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+}
+
+/* 1. Lluvia de Estrellas */
+.star {
+    position: absolute;
+    font-size: 2rem;
+    pointer-events: auto;
+    cursor: pointer;
+    animation: starFall 3s linear forwards;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    transition: transform 0.2s;
+}
+
+.star:hover {
+    transform: scale(1.3);
+}
+
+@keyframes starFall {
+    from {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.star-message {
+    position: absolute;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    animation: fadeUpOut 2s ease-out forwards;
+    white-space: nowrap;
+}
+
+/* Piñata */
+.pinata-container {
+    position: relative;
+    margin: 20px auto;
+    width: 150px;
+    height: 150px;
+    display: none;
+}
+
+.pinata-container.active {
+    display: block;
+}
+
+.pinata {
+    font-size: 5rem;
+    cursor: pointer;
+    transition: transform 0.1s;
+    user-select: none;
+}
+
+.pinata:active {
+    transform: scale(0.9) rotate(15deg);
+}
+
+.pinata-hits {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #764ba2;
+}
+
+.pinata.shake {
+    animation: shake 0.3s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-15deg); }
+    75% { transform: rotate(15deg); }
+}
+
+/* 2. Corazones Voladores */
+.heart {
+    position: absolute;
+    font-size: 2rem;
+    animation: heartFloat 4s ease-in-out forwards;
+    pointer-events: none;
+}
+
+@keyframes heartFloat {
+    0% {
+        transform: translateY(0) scale(0.5) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) scale(1.5) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Caja de Sorpresas */
+.surprise-box-container {
+    position: relative;
+    margin: 20px auto;
+    width: 120px;
+    height: 120px;
+    display: none;
+}
+
+.surprise-box-container.active {
+    display: block;
+}
+
+.surprise-box {
+    font-size: 4rem;
+    cursor: pointer;
+    transition: transform 0.3s;
+    animation: boxShake 2s ease-in-out infinite;
+}
+
+.surprise-box:hover {
+    transform: scale(1.2);
+}
+
+@keyframes boxShake {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(-5deg); }
+    75% { transform: translateY(-10px) rotate(5deg); }
+}
+
+/* 3. Pétalos Mágicos */
+.petal {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: petalFall 5s linear forwards;
+    pointer-events: none;
+}
+
+@keyframes petalFall {
+    0% {
+        transform: translateY(-50px) translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) translateX(var(--sway, 0px)) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* Ruleta de Deseos */
+.roulette-container {
+    position: relative;
+    margin: 20px auto;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.roulette-container.active {
+    display: flex;
+}
+
+#rouletteCanvas {
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.roulette-result {
+    margin-top: 15px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #764ba2;
+    min-height: 30px;
+    text-align: center;
+}
+
+/* 4. Globos Flotantes */
+.balloon {
+    position: absolute;
+    font-size: 3rem;
+    cursor: pointer;
+    animation: balloonFloat 6s ease-in-out forwards;
+    transition: transform 0.2s;
+    pointer-events: auto;
+}
+
+.balloon:hover {
+    transform: scale(1.2);
+}
+
+@keyframes balloonFloat {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(20deg);
+        opacity: 0;
+    }
+}
+
+/* Piano */
+.piano-container {
+    display: none;
+    margin: 20px auto;
+    max-width: 500px;
+}
+
+.piano-container.active {
+    display: block;
+}
+
+.piano-keys {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.piano-key {
+    background: linear-gradient(145deg, #ffffff, #e0e0e0);
+    border: 2px solid #764ba2;
+    border-radius: 10px;
+    padding: 20px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #764ba2;
+    transition: all 0.1s;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    user-select: none;
+    min-width: 60px;
+    text-align: center;
+}
+
+.piano-key:hover {
+    background: linear-gradient(145deg, #764ba2, #667eea);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.piano-key:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.piano-key.playing {
+    animation: keyPress 0.3s;
+}
+
+@keyframes keyPress {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(0.95); background: #f093fb; }
+}
+
+/* 5. Mini Juego */
+.game-container {
+    display: none;
+    position: relative;
+    margin: 20px auto;
+    max-width: 500px;
+}
+
+.game-container.active {
+    display: block;
+}
+
+#gameCanvas {
+    border: 3px solid #764ba2;
+    border-radius: 15px;
+    background: linear-gradient(180deg, #e0c3fc 0%, #8ec5fc 100%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    cursor: crosshair;
+    display: block;
+    margin: 0 auto;
+}
+
+.game-score, .game-timer {
+    position: absolute;
+    top: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #764ba2;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 15px;
+    border-radius: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.game-score {
+    left: 10px;
+}
+
+.game-timer {
+    right: 10px;
+}
+
+/* Auroras Boreales */
+.aurora-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 997;
+    display: none;
+}
+
+.aurora-canvas.active {
+    display: block;
+}
+
+/* 6. Mariposas */
+.butterfly {
+    position: absolute;
+    font-size: 2rem;
+    pointer-events: none;
+    animation: butterflyFly 8s ease-in-out infinite;
+}
+
+@keyframes butterflyFly {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(100px, -50px) rotate(10deg);
+    }
+    50% {
+        transform: translate(50px, -100px) rotate(-10deg);
+    }
+    75% {
+        transform: translate(-50px, -50px) rotate(5deg);
+    }
+}
+
+@keyframes fadeUpOut {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateY(0);
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) translateY(-100px);
+    }
+}
+
+@media (max-width: 600px) {
+    .title {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .message {
+        font-size: 1rem;
+    }
+    
+    .qualities-grid,
+    .wishes {
+        grid-template-columns: 1fr;
+    }
+    
+    .cake-big {
+        font-size: 4rem;
+    }
+    
+    .celebration-btn, .effect-btn {
+        padding: 12px 30px;
+        font-size: 0.9rem;
+    }
+    
+    .content-box {
+        padding: 25px 15px;
+    }
+    
+    .final-title {
+        font-size: 2rem;
+    }
+    
+    .scroll-indicator p {
+        font-size: 1rem;
+    }
+    
+    .piano-key {
+        min-width: 45px;
+        padding: 15px 10px;
+        font-size: 0.9rem;
+    }
+    
+    #gameCanvas {
+        max-width: 100%;
+    }
+}
