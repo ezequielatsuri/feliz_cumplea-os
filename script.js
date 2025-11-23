@@ -730,18 +730,10 @@ var PetalsAndRoulette = /** @class */ (function () {
         setTimeout(function () { return petal.remove(); }, 6000);
     };
     PetalsAndRoulette.prototype.setupRoulette = function () {
-        var _this = this;
         if (this.canvas && this.ctx) {
-            var updateSize = function () {
-                var containerWidth = _this.rouletteContainer ? _this.rouletteContainer.clientWidth : 300;
-                var size = Math.min(containerWidth, 300);
-                _this.canvas.width = size;
-                _this.canvas.height = size;
-                _this.drawRoulette(0);
-            };
-            
-            updateSize();
-            window.addEventListener('resize', updateSize);
+            this.canvas.width = 300;
+            this.canvas.height = 300;
+            this.drawRoulette(0);
         }
     };
     PetalsAndRoulette.prototype.drawRoulette = function (rotation) {
@@ -1022,27 +1014,12 @@ var GameAndAurora = /** @class */ (function () {
     GameAndAurora.prototype.setupCanvas = function () {
         var _this = this;
         if (this.canvas) {
-            var updateGameSize = function () {
-                var containerWidth = _this.gameContainer ? _this.gameContainer.clientWidth : 500;
-                _this.canvas.width = Math.min(containerWidth, 500);
-                _this.canvas.height = 400;
-            };
-            
-            updateGameSize();
-            window.addEventListener('resize', updateGameSize);
-            
+            this.canvas.width = 500;
+            this.canvas.height = 400;
             this.canvas.addEventListener('mousemove', function (e) {
                 var rect = _this.canvas.getBoundingClientRect();
                 _this.playerX = e.clientX - rect.left;
             });
-            
-            // Touch support for mobile
-            this.canvas.addEventListener('touchmove', function (e) {
-                e.preventDefault();
-                var rect = _this.canvas.getBoundingClientRect();
-                var touch = e.touches[0];
-                _this.playerX = touch.clientX - rect.left;
-            }, { passive: false });
         }
     };
     GameAndAurora.prototype.setupAuroraCanvas = function () {
