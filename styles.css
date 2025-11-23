@@ -421,10 +421,102 @@ body {
         margin-left: 60px !important; /* Override alternating margins */
         margin-right: 0 !important;
         text-align: center;
+        padding: 30px 20px;
     }
     
     .path-section {
         justify-content: flex-start; /* Always align left */
+        padding: 30px 0;
+        min-height: auto;
+    }
+
+    .path-container {
+        padding: 50px 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .message {
+        font-size: 1rem;
+    }
+
+    .emoji-big {
+        font-size: 3.5rem;
+    }
+
+    .qualities-grid,
+    .wishes {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .effect-btn {
+        width: 100%;
+        margin: 5px 0;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .cake-big {
+        font-size: 4rem;
+    }
+
+    .celebration-btn, 
+    .fireworks-btn {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
+
+    .final-title {
+        font-size: 2rem;
+    }
+
+    .balloon-emoji {
+        font-size: 2rem;
+    }
+
+    .gift {
+        font-size: 2.5rem;
+    }
+    
+    /* Adjust envelope for small screens */
+    .envelope {
+        width: 240px;
+        height: 160px;
+    }
+    
+    .envelope-front {
+        border-left-width: 120px;
+        border-right-width: 120px;
+        border-bottom-width: 96px;
+    }
+    
+    .envelope-top {
+        border-left-width: 120px;
+        border-right-width: 120px;
+        border-top-width: 80px;
+    }
+    
+    .letter {
+        width: 220px;
+        height: 280px;
+    }
+    
+    .letter-content h3 {
+        font-size: 2rem;
+    }
+    
+    .letter-content p {
+        font-size: 2rem;
     }
 }
 
